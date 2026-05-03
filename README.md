@@ -18,6 +18,7 @@ Suppose you are trying to create a real time strategy game. You may have a grid-
 where the `1` indicates you *cannot* travel into that cell. Now you want to move a character that is in the cell with index `(0, 0)` to the bottom right corner. Ideally, you would like to know the shortest path too. This can be done easily with `gtravyl`, observe:
 
 ```py
+import numpy as np
 import gtravyl as gt
 world = np.array([[0, 0, 0, 1, 1, 1, 1],
                   [0, 0, 0, 1, 1, 1, 1],
