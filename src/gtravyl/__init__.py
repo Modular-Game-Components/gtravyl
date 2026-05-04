@@ -14,7 +14,7 @@ def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
     return 0 <= pt[0] < dim[0] and 0 <= pt[1] < dim[1]
 
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: np.array, seen: set[tuple[int, int]]):
+                 grid: np.array):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
     :param ind: Index to compute von Neumann neighborhood of.
@@ -26,14 +26,11 @@ def vn_neighbors(ind: tuple[int, int],
     up = (ind[0], ind[1] - 1)
     down = (ind[0], ind[1] + 1)
     nbs = [left, right, up, down]
-    nbs = filter(lambda x: in_bounds(x, grid.shape) \
-                       and x not in seen \
-                       and grid[x] != 1, nbs)
+    nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
 def moore_neighbors(ind: tuple[int, int],
-                    grid: np.array, seen: set[tuple[int, int]],
-                    wrap=False):
+                    grid: np.array, wrap=False):
     """Return the Moore neighborhood of a particular cell in the grid.
 
     :param ind: Index to compute Moore neighborhood of.
@@ -51,9 +48,7 @@ def moore_neighbors(ind: tuple[int, int],
     nbs = [left_tcorner, left, left_bcorner,
            right_tcorner, right, right_bcorner,
            up, down]
-    nbs = filter(lambda x: in_bounds(x, grid.shape) \
-                       and x not in seen \
-                       and grid[x] != 1, nbs)
+    nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
 def shortest_path(grid: np.array,
@@ -94,11 +89,12 @@ def shortest_path(grid: np.array,
         if candidate == t:
             break
         seen.add(candidate)
-        for nb in neighbors(candidate, grid, seen):
-            if score + 1 < scores[nb]:
-                scores[nb] = score + 1
-                parents[nb] = candidate
-                heappush(frontier, (score + 1, nb)) 
+        for nb in neighbors(candidate, grid):
+            if nb not in seen:
+                if score + 1 < scores[nb]:
+                    scores[nb] = score + 1
+                    parents[nb] = candidate
+                    heappush(frontier, (score + 1, nb)) 
     else:
         return []
     
