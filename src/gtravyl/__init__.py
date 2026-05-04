@@ -1,4 +1,5 @@
 from collections import defaultdict
+from math import sqrt
 from heapq import heappush, heappop
 from typing import Any
 
@@ -35,7 +36,7 @@ def unit_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
               value1: Any, value2: Any):
     """Neighbor indices are computed under the standard Euclidean distance."""
-    return (ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2
+    return sqrt((ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2)
 
 
 def vn_neighbors(ind: tuple[int, int], 
@@ -112,22 +113,20 @@ def shortest_path(grid: np.array,
     parents[s] = None
     while frontier:
         (score, candidate) = heappop(frontier)
-        if candidate == t:
-            break
         seen.add(candidate)
+        if score > scores[t]:
+            continue
         for nb in neighbors(candidate, grid, wrap=wrap):
             if nb not in seen:
                 d = dist(candidate, nb, grid[candidate], grid[nb])
                 if score + d < scores[nb]:
                     scores[nb] = score + d
                     parents[nb] = candidate
-                    heappush(frontier, (score + 1, nb)) 
-    else:
-        return []
+                    heappush(frontier, (score + d, nb)) 
     
     # Reconstruct:
-    path = [candidate]
-    while (parent := parents[candidate]) is not None:
+    path = [t]
+    while (parent := parents[t]) is not None:
         path = [parent] + path
-        candidate = parent
+        t = parent
     return path
