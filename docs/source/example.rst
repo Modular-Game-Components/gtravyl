@@ -71,3 +71,37 @@ This gives the following output (notice the diagonal movement!):
     [0 0 0 2 2 2 0]
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
+
+This might not look like the shortest distance, but that is because, by default we assume every neighbor is ``1`` unit away from each other (even diagonals!).
+
+Euclidean Distance
+------------------
+
+We fix the above by supplying the standard ``euclidean_dist`` function for the ``dist`` dictionary argument. This is what the new code looks like:
+
+.. code-block:: python
+
+   import numpy as np
+   import gtravyl as gt
+   world = np.array([[0, 0, 0, 1, 1, 1, 1],
+                     [0, 0, 0, 1, 1, 1, 1],
+                     [0, 0, 0, 0, 0, 0, 0],
+                     [1, 1, 0, 1, 1, 1, 0],
+                     [1, 1, 0, 1, 1, 1, 0]])
+   path = gt.shortest_path(world, (0, 0), (4, 6),
+                           neighbors=gt.moore_neighbors,
+                           dist=gt.euclidean_dist)
+   for cell in path:
+       world[cell] = 2
+
+   print(world)
+
+The output changes to accomidate the Euclidean distance:
+
+.. code-block:: python
+
+   [[2 0 0 1 1 1 1]
+    [0 2 0 1 1 1 1]
+    [0 0 2 2 2 2 0]
+    [1 1 0 1 1 1 2]
+    [1 1 0 1 1 1 2]]
