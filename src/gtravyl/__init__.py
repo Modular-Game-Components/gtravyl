@@ -126,7 +126,10 @@ def shortest_path(grid: np.array,
     
     # Reconstruct:
     path = [t]
-    while (parent := parents[t]) is not None:
-        path = [parent] + path
-        t = parent
-    return path
+    try:
+        while (parent := parents[t]) is not None:
+            path = [parent] + path
+            t = parent
+        return path
+    except KeyError: # No path found!
+        return []
