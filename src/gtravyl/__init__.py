@@ -19,7 +19,6 @@ def vn_neighbors(ind: tuple[int, int],
 
     :param ind: Index to compute von Neumann neighborhood of.
     :param grid: The grid ``ind`` belongs to.
-    :param seen: Exclude seen indices from being neighbors.
     """
     left = (ind[0] - 1, ind[1])
     right = (ind[0] + 1, ind[1])
@@ -35,7 +34,6 @@ def moore_neighbors(ind: tuple[int, int],
 
     :param ind: Index to compute Moore neighborhood of.
     :param grid: The grid ``ind`` belongs to.
-    :param seen: Exclude seen indices from being neighbors.
     """
     left_tcorner = (ind[0] - 1, ind[1] + 1)
     left = (ind[0] - 1, ind[1])
