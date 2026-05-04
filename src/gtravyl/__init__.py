@@ -13,44 +13,62 @@ def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
     """
     return 0 <= pt[0] < dim[0] and 0 <= pt[1] < dim[1]
 
+
+def no_wrap(ind: tuple[int, int], dim: tuple[int, int]):
+    """Does not wrap indices. Essentially does nothing in this case."""
+    return ind
+
+def wrap(ind: tuple[int, int], dim: tuple[int, int]):
+    """Wraps the cell values around. So, if you start at (0, 0) and go left you
+    end up at (x dimension, 0)
+    :param ind the index to potentially modify (that is, wrap it if applicable).
+    :dim Dimensions of the grid.
+    """
+    return ind[0] % dim[0], ind[1] % dim[1]
+
+
+def unit_dist(ind1: tuple[int, int], ind2: tuple[int, int],
+              value1: Any, value2: Any):
+    """Every neighbor is ``1`` unit distant from the other."""
+    return 1
+
+def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
+              value1: Any, value2: Any):
+    """Neighbor indices are computed under the standard Euclidean distance."""
+    return (ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2
+
+
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: np.array):
+                 grid: np.array,
+                 wrap=no_wrap):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
     :param ind: Index to compute von Neumann neighborhood of.
     :param grid: The grid ``ind`` belongs to.
     """
-    left = (ind[0] - 1, ind[1])
-    right = (ind[0] + 1, ind[1])
-    up = (ind[0], ind[1] - 1)
-    down = (ind[0], ind[1] + 1)
+    left = wrap((ind[0] - 1, ind[1]), grid.shape)
+    right = wrap((ind[0] + 1, ind[1]), grid.shape)
+    up = wrap((ind[0], ind[1] - 1), grid.shape)
+    down = wrap((ind[0], ind[1] + 1), grid.shape)
     nbs = [left, right, up, down]
     nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
-def unit_dist(ind1: tuple[int, int], ind2: tuple[int, int],
-              value1: Any, value2: Any):
-    return 1
-
-def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
-              value1: Any, value2: Any):
-    return (ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2
-
 def moore_neighbors(ind: tuple[int, int],
-                    grid: np.array, wrap=False):
+                    grid: np.array, wrap=no_wrap):
     """Return the Moore neighborhood of a particular cell in the grid.
 
     :param ind: Index to compute Moore neighborhood of.
     :param grid: The grid ``ind`` belongs to.
     """
-    left_tcorner = (ind[0] - 1, ind[1] + 1)
-    left = (ind[0] - 1, ind[1])
-    left_bcorner = (ind[0] - 1, ind[1] - 1)
-    right_tcorner = (ind[0] + 1, ind[1] + 1)
-    right = (ind[0] + 1, ind[1])
-    right_bcorner = (ind[0] + 1, ind[1] - 1)
-    up = (ind[0], ind[1] - 1)
-    down = (ind[0], ind[1] + 1)
+    left_tcorner = wrap((ind[0] - 1, ind[1] + 1), grid.shape)
+    left = wrap((ind[0] - 1, ind[1]), grid.shape)
+    left_bcorner = wrap((ind[0] - 1, ind[1] - 1), grid.shape)
+    right_tcorner = wrap((ind[0] + 1, ind[1] + 1), grid.shape)
+    right = wrap((ind[0] + 1, ind[1]), grid.shape)
+    right_bcorner = wrap((ind[0] + 1, ind[1] - 1), grid.shape)
+    up = wrap((ind[0], ind[1] - 1), grid.shape)
+    down = wrap((ind[0], ind[1] + 1), grid.shape)
     nbs = [left_tcorner, left, left_bcorner,
            right_tcorner, right, right_bcorner,
            up, down]
