@@ -3,8 +3,7 @@ gtravyl
 
 `gtravyl` provides an easy way to take a grid-like layout and compute the shortest distance from any two desired cells in the grid.
 
-How does it work?
-=================
+# How does it work?
 
 Suppose you are trying to create a real time strategy game. You may have a grid-like map internally represented as a `numpy` array. It might look something like:
 
@@ -42,3 +41,6 @@ This gives a path (represented by the cells with `2`) that looks like one should
  [1 1 0 1 1 1 2]]
  ```
 
+# Documentation
+
+More documentation can be found on [readthedocs.](https://gtravyl.readthedocs.io/en/latest/index.html)
