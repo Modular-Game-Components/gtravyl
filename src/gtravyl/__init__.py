@@ -28,6 +28,14 @@ def vn_neighbors(ind: tuple[int, int],
     nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
+def unit_dist(ind1: tuple[int, int], ind2: tuple[int, int],
+              value1: Any, value2: Any):
+    return 1
+
+def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
+              value1: Any, value2: Any):
+    return (ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2
+
 def moore_neighbors(ind: tuple[int, int],
                     grid: np.array, wrap=False):
     """Return the Moore neighborhood of a particular cell in the grid.
@@ -54,7 +62,8 @@ def shortest_path(grid: np.array,
                   ti: tuple[int, int] | None = None,
                   sv: Any | None = None,
                   tv: Any | None = None,
-                  neighbors=vn_neighbors) -> list[tuple[int, int]]:
+                  neighbors=vn_neighbors,
+                  dist=unit_dist) -> list[tuple[int, int]]:
     """Find shortest path from ``s`` to ``t`` in a given `grid`.
 
     :param grid: numpy array representation of the world to traverse.
@@ -89,8 +98,9 @@ def shortest_path(grid: np.array,
         seen.add(candidate)
         for nb in neighbors(candidate, grid):
             if nb not in seen:
-                if score + 1 < scores[nb]:
-                    scores[nb] = score + 1
+                d = dist(candidate, nb, grid[candidate], grid[nb])
+                if score + d < scores[nb]:
+                    scores[nb] = score + d
                     parents[nb] = candidate
                     heappush(frontier, (score + 1, nb)) 
     else:
