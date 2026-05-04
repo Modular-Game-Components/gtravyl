@@ -105,3 +105,73 @@ The output changes to accomidate the Euclidean distance:
     [0 0 2 2 2 2 0]
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
+
+``wrap``: Another Example
+-------------------------
+
+Consider the following world map:
+
+.. code-block::
+
+   0001000
+   0001000
+   0001000
+
+And consider running the previous example with the new map. That is,
+
+.. code-block:: python
+
+   import numpy as np
+   import gtravyl as gt
+   world = np.array([[0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0]])
+   path = gt.shortest_path(world, (0, 0), (4, 6),
+                           neighbors=gt.moore_neighbors,
+                           dist=gt.euclidean_dist)
+   for cell in path:
+       world[cell] = 2
+
+   print(world)
+
+This gives a result of:
+
+.. code-block:: python
+
+  [[0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]] 
+
+There are no ``2`` values because no path can be found. But what if we "wrap" the grid aroud a globe and allow (for instance) moving from ``(0, 0)`` to ``(0, 6)`` by moving left. We can do this by specifying the ``wrap`` keyword argument. Observe:
+
+.. code-block:: python
+
+   import numpy as np
+   import gtravyl as gt
+   world = np.array([[0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0, 0]])
+   path = gt.shortest_path(world, (0, 0), (4, 6),
+                           neighbors=gt.moore_neighbors,
+                           dist=gt.euclidean_dist,
+                           wrap=gt.wrap)
+   for cell in path:
+       world[cell] = 2
+
+   print(world)
+
+This now gives:
+
+.. code-block:: python
+
+  [[2 0 0 1 0 0 2]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 0]
+   [0 0 0 1 0 0 2]]
