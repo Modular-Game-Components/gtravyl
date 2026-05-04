@@ -51,7 +51,7 @@ def moore_neighbors(ind: tuple[int, int],
     nbs = [left_tcorner, left, left_bcorner,
            right_tcorner, right, right_bcorner,
            up, down]
-    nbs = filter(lambda x: in_bounds(x) \
+    nbs = filter(lambda x: in_bounds(x, grid.shape) \
                        and x not in seen \
                        and grid[x] != 1, nbs)
     return nbs
