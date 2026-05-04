@@ -81,6 +81,7 @@ def shortest_path(grid: np.array,
                   sv: Any | None = None,
                   tv: Any | None = None,
                   neighbors=vn_neighbors,
+                  wrap=no_wrap,
                   dist=unit_dist) -> list[tuple[int, int]]:
     """Find shortest path from ``s`` to ``t`` in a given `grid`.
 
@@ -114,7 +115,7 @@ def shortest_path(grid: np.array,
         if candidate == t:
             break
         seen.add(candidate)
-        for nb in neighbors(candidate, grid):
+        for nb in neighbors(candidate, grid, wrap=wrap):
             if nb not in seen:
                 d = dist(candidate, nb, grid[candidate], grid[nb])
                 if score + d < scores[nb]:
