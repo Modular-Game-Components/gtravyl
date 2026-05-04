@@ -48,13 +48,7 @@ def moore_neighbors(ind: tuple[int, int],
     nbs = [left_tcorner, left, left_bcorner,
            right_tcorner, right, right_bcorner,
            up, down]
-<<<<<<< HEAD
     nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
-=======
-    nbs = filter(lambda x: in_bounds(x, grid.shape) \
-                       and x not in seen \
-                       and grid[x] != 1, nbs)
->>>>>>> main
     return nbs
 
 def shortest_path(grid: np.array,
