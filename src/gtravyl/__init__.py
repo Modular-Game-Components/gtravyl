@@ -4,13 +4,21 @@ from heapq import heappush, heappop
 import numpy as np
 
 
-def in_bounds(pt: tuple[int, int], dim: tuple[int, int]):
-    """Checks if the candidate point actually exists in the grid."""
+def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
+    """Checks if the candidate point actually exists in the grid.
+
+    :param pt: The point to check if it is in bounds.
+    :param dim: Dimensions (row, column) of the grid.
+    """
     return 0 <= pt[0] < dim[0] and 0 <= pt[1] < dim[1]
 
 def vn_neighbors(ind: tuple[int, int], 
                  grid: np.array, seen: set[tuple[int, int]]):
     """Return the von Neumann neighborhood of a particular cell in the grid.
+
+    :param ind: Index to compute von Neumann neighborhood of.
+    :param grid: The grid ``ind`` belongs to.
+    :param seen: Exclude seen indices from being neighbors.
     """
     left = (ind[0] - 1, ind[1])
     right = (ind[0] + 1, ind[1])
@@ -25,7 +33,12 @@ def vn_neighbors(ind: tuple[int, int],
 def moore_neighbors(ind: tuple[int, int],
                     grid: np.array, seen: set[tuple[int, int]],
                     wrap=False):
-    """Return the Moore neighborhood of a particular cell in the grid."""
+    """Return the Moore neighborhood of a particular cell in the grid.
+
+    :param ind: Index to compute Moore neighborhood of.
+    :param grid: The grid ``ind`` belongs to.
+    :param seen: Exclude seen indices from being neighbors.
+    """
     left_tcorner = (ind[0] - 1, ind[1] + 1)
     left = (ind[0] - 1, ind[1])
     left_bcorner = (ind[0] - 1, ind[1] - 1)
@@ -46,7 +59,14 @@ def moore_neighbors(ind: tuple[int, int],
 def shortest_path(grid: np.array,
                   s: tuple[int, int], t: tuple[int, int],
                   neighbors=vn_neighbors) -> list[tuple[int, int]]:
-    """Find shortest path from `s` to `t` in a given `grid`."""
+    """Find shortest path from ``s`` to ``t`` in a given `grid`.
+
+    :param grid: numpy array representation of the world to traverse.
+    :param s: The "source" index, i.e. where the path search starts.
+    :param t: The "desitination" index, i.e. where the path should end.
+    :param neighbors: Computes the neighborhood of any choice of index in the
+       grid.
+    """
     # Keep track of which nodes need to be explored.
     frontier = []
     scores = defaultdict(lambda: float('inf')) # candidate -> current 
