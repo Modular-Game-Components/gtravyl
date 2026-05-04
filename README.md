@@ -1,7 +1,7 @@
 gtravyl
 =======
 
-`gtravyl` provides an easy way to take a graph like layout and compute the shortest distance from any two desired cells in the grid.
+`gtravyl` provides an easy way to take a grid-like layout and compute the shortest distance from any two desired cells in the grid.
 
 How does it work?
 =================
