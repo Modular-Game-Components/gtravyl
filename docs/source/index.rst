@@ -6,12 +6,16 @@
 gtravyl documentation
 =====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+``gtravyl`` provides an easy way to take a grid-like layout and compute the shortest distance from any two desired cells in the grid. Instead of worrying about connections in graphs (as is done with most libraries), you give a grid representation/approximation of the world. This approximation/representation is then traversed for you.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+Contents
+--------
+
+.. toctree::
+   
+   example
+   api

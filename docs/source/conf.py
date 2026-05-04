@@ -14,7 +14,12 @@ release = '0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx_automodapi.automodapi'
+]
+numpydoc_show_class_memberrs = False
 
 templates_path = ['_templates']
 exclude_patterns = []
