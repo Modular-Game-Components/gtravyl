@@ -41,6 +41,43 @@ This gives a path (represented by the cells with ``2``) that looks like one shou
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
 
+.. note:: Values instead of indices.
+   Another representation we may have is:
+   .. code-block::
+
+      3001111
+      0001111
+      0000000
+      1101110
+      1101114
+   
+   Where ``3`` and ``4`` are used to indicate the start and end vertices, respectively. To accomidate for this, we may replace
+   
+   ..code-block:: python
+      import numpy as np
+      import gtravyl as gt
+      world = np.array([[0, 0, 0, 1, 1, 1, 1],
+                        [0, 0, 0, 1, 1, 1, 1],
+                        [0, 0, 0, 0, 0, 0, 0],
+                        [1, 1, 0, 1, 1, 1, 0],
+                        [1, 1, 0, 1, 1, 1, 0]])
+      path = gt.shortest_path(world, (0, 0), (4, 6))
+
+   with
+
+   ..code-block:: python
+      import numpy as np
+      import gtravyl as gt
+      world = np.array([[3, 0, 0, 1, 1, 1, 1],
+                        [0, 0, 0, 1, 1, 1, 1],
+                        [0, 0, 0, 0, 0, 0, 0],
+                        [1, 1, 0, 1, 1, 1, 0],
+                        [1, 1, 0, 1, 1, 1, 4]])
+      path = gt.shortest_path(world, sv=3, tv=4)
+
+   ``sv`` and ``tv`` are short for "start value" and "end value, respectively.
+
+--------------------
 A Variant: Diagonals
 --------------------
 
@@ -74,6 +111,7 @@ This gives the following output (notice the diagonal movement!):
 
 This might not look like the shortest distance, but that is because, by default we assume every neighbor is ``1`` unit away from each other (even diagonals!).
 
+------------------
 Euclidean Distance
 ------------------
 
@@ -106,6 +144,7 @@ The output changes to accomidate the Euclidean distance:
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
 
+-------------------------
 ``wrap``: Another Example
 -------------------------
 
