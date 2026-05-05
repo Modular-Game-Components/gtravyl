@@ -4,6 +4,7 @@ from heapq import heappush, heappop
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 
 def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
@@ -15,11 +16,11 @@ def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
     return 0 <= pt[0] < dim[0] and 0 <= pt[1] < dim[1]
 
 
-def no_wrap(ind: tuple[int, int], dim: tuple[int, int]):
+def no_wrap(ind: tuple[int, int], dim: tuple[int, int]) -> tuple[int, int]:
     """Does not wrap indices. Essentially does nothing in this case."""
     return ind
 
-def wrap(ind: tuple[int, int], dim: tuple[int, int]):
+def wrap(ind: tuple[int, int], dim: tuple[int, int]) -> tuple[int, int]:
     """Wraps the cell values around. So, if you start at (0, 0) and go left you
     end up at (x dimension, 0)
     :param ind the index to potentially modify (that is, wrap it if applicable).
@@ -40,7 +41,7 @@ def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 
 
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: np.array,
+                 grid: npt.NDArray,
                  wrap=no_wrap):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
@@ -56,7 +57,8 @@ def vn_neighbors(ind: tuple[int, int],
     return nbs
 
 def moore_neighbors(ind: tuple[int, int],
-                    grid: np.array, wrap=no_wrap):
+                    grid: npt.NDArray, 
+                    wrap=no_wrap):
     """Return the Moore neighborhood of a particular cell in the grid.
 
     :param ind: Index to compute Moore neighborhood of.
@@ -76,7 +78,7 @@ def moore_neighbors(ind: tuple[int, int],
     nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
-def shortest_path(grid: np.array,
+def shortest_path(grid: npt.NDArray,
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
                   sv: Any | None = None,
@@ -99,6 +101,14 @@ def shortest_path(grid: np.array,
     if tv is not None:
         i2 = np.where(grid == tv)[0][0]
     s, t = i1 or si, i2 or ti
+    assert type(s) is tuple
+    assert type(t) is tuple
+    assert len(s) == 2
+    assert len(t) == 2
+    assert type(s[0]) is int
+    assert type(s[1]) is int
+    assert type(t[0]) is int
+    assert type(t[1]) is int
     # Keep track of which nodes need to be explored.
     frontier = []
     scores = defaultdict(lambda: float('inf')) # candidate -> current 
@@ -125,7 +135,7 @@ def shortest_path(grid: np.array,
                     heappush(frontier, (score + d, nb)) 
     
     # Reconstruct:
-    path = [t]
+    path: list[tuple[int, int]] = [t]
     try:
         while (parent := parents[t]) is not None:
             path = [parent] + path
