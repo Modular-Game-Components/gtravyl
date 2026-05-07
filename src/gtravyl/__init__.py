@@ -17,14 +17,20 @@ def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
 
 
 def no_wrap(ind: tuple[int, int], dim: tuple[int, int]) -> tuple[int, int]:
-    """Does not wrap indices. Essentially does nothing in this case."""
+    """Does not wrap indices. Essentially does nothing in this case.
+
+    :param ind: Needed for type signature. This function is equivalent to:
+       id(ind) -> ind
+    :param dim: Needed for type signature, it is otherwise ignored.
+    """
     return ind
 
 def wrap(ind: tuple[int, int], dim: tuple[int, int]) -> tuple[int, int]:
     """Wraps the cell values around. So, if you start at (0, 0) and go left you
     end up at (x dimension, 0)
-    :param ind the index to potentially modify (that is, wrap it if applicable).
-    :dim Dimensions of the grid.
+    :param ind: The index to potentially modify (that is, wrap it if 
+       applicable).
+    :param dim: Dimensions of the grid.
     """
     return ind[0] % dim[0], ind[1] % dim[1]
 
@@ -36,7 +42,13 @@ def unit_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 
 def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
               value1: Any, value2: Any):
-    """Neighbor indices are computed under the standard Euclidean distance."""
+    """Neighbor indices are computed under the standard Euclidean distance.
+
+    :param ind1: Location in Euclidean space for the first point.
+    :param ind2: Location in Euclidean space for the second point.
+    :param value1: Needed for type signature, essentially ignored.
+    :param value2: Needed for type signature, essentially ignored.
+    """
     return sqrt((ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2)
 
 
@@ -78,6 +90,7 @@ def moore_neighbors(ind: tuple[int, int],
     nbs = filter(lambda x: in_bounds(x, grid.shape) and grid[x] != 1, nbs)
     return nbs
 
+
 def shortest_path(grid: npt.NDArray,
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
@@ -89,10 +102,14 @@ def shortest_path(grid: npt.NDArray,
     """Find shortest path from ``s`` to ``t`` in a given `grid`.
 
     :param grid: numpy array representation of the world to traverse.
-    :param s: The "source" index, i.e. where the path search starts.
-    :param t: The "desitination" index, i.e. where the path should end.
+    :param si: The "source" index, i.e. where the path search starts.
+    :param ti: The "desitination" index, i.e. where the path should end.
+    :param sv: The "source" value, i.e. the value of the start index.
+    :param tv: The "desitination" value, i.e. the value of the end index.
     :param neighbors: Computes the neighborhood of any choice of index in the
        grid.
+    :param wrap: Does the grid wrap around. Defaults to no wrap.
+    :param dist: The distance function used. Defaults to unit distance.
     """
     i1 = None
     i2 = None
@@ -112,8 +129,8 @@ def shortest_path(grid: npt.NDArray,
     # Keep track of which nodes need to be explored.
     frontier = []
     scores = defaultdict(lambda: float('inf')) # candidate -> current 
-                                                     # best score (ultimately,
-                                                     # best score)
+                                               # best score (ultimately,
+                                               # best score)
     parents = {} # candidate -> parent (in particular, the parent with the
                  # shortest path to s.
     seen = set() # Keeps track of already seen indices.
