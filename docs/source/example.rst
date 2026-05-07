@@ -112,13 +112,11 @@ This gives the following output (notice the diagonal movement!):
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
 
-This might not look like the shortest distance, but that is because, by default we assume every neighbor is ``1`` unit away from each other (even diagonals!).
-
 ------------------
 Euclidean Distance
 ------------------
 
-We fix the above by supplying the standard ``euclidean_dist`` function for the ``dist`` dictionary argument. This is what the new code looks like:
+We remark, that although we have computed the shortest path, we assumed the "unit metric". That is each distance (including diagonals!) is ``1``. It would make much more sense if the diagonals had a value of ``sqrt(2)``. To do so, we can supply the ``euclidean_dist`` function for the ``dist`` keyword argument. This is what the new code looks like:
 
 .. code-block:: python
 
@@ -137,13 +135,13 @@ We fix the above by supplying the standard ``euclidean_dist`` function for the `
 
    print(world)
 
-The output changes to accomidate the Euclidean distance:
+In this case, we got lucky and the path remains the same as above:
 
 .. code-block:: python
 
-   [[2 0 0 1 1 1 1]
-    [0 2 0 1 1 1 1]
-    [0 0 2 2 2 2 0]
+   [[2 2 0 1 1 1 1]
+    [0 0 2 1 1 1 1]
+    [0 0 0 2 2 2 0]
     [1 1 0 1 1 1 2]
     [1 1 0 1 1 1 2]]
 
@@ -217,3 +215,114 @@ This now gives:
    [0 0 0 1 0 0 0]
    [0 0 0 1 0 0 0]
    [0 0 0 1 0 0 2]]
+
+
+A Slightly More Complicated Example
+-----------------------------------
+
+Realistically, the world is not represented as *just* ``1`` and ``0``. We may also have other values. For instance we may have something like:
+
+.. code-block::
+
+   000222
+   000222
+   000123
+   444333
+   444113
+   444113
+
+Where each number corresponds, to say, the height. A couple issues arise:
+
+* ``4`` may represent a mountain, and we may not want units to be able to travelto mountains.
+* Traveling from one height to another might incur a penalty in terms of length. For instance, it might be slower to travel from a cell with value (height) ``0`` to a cell with value (height) ``2`` than it is to travel from a cell with value (height) ``2`` to a cell with value (height) ``2``.
+
+We adress these two issues in the proceeding sections.
+
+------------------
+Avoiding Mountains
+------------------
+
+We can do this by changed the ``allowed`` keyword argument. ``allowed`` is a function that takes a value and returns a boolean as to whether it is permissible to travel to that square. Thus, we may do:
+
+.. code-block:: python
+
+   import numpy as np
+   import gtravyl as gt
+   world = np.array([[0, 0, 0, 2, 2, 2],
+                     [0, 0, 0, 2, 2, 2],
+                     [0, 0, 0, 1, 2, 3],
+                     [4, 4, 4, 3, 3, 3]
+                     [4, 4, 4, 1, 1, 1],
+                     [4, 4, 4, 1, 1, 1]])
+   path = gt.shortest_path(world, (0, 0), (5, 5),
+                           neighbors=gt.moore_neighbors,
+                           allowed=lambda x: x < 4)
+   for cell in path:
+       world[cell] = 9
+
+   print(world)
+
+This gives:
+
+.. code-block:: python
+
+   [[9 0 0 2 2 2]
+    [0 9 0 2 2 2]
+    [0 0 9 2 2 2]
+    [4 4 4 9 3 3]
+    [4 4 4 1 9 1]
+    [4 4 4 1 1 9]]
+
+------------------------------------
+Elevation: A Closer Look at Distance
+------------------------------------
+
+To account for elevation we can make a custom distance function. A distance function takes in ``4`` arguments instead of the expected ``2``. Why? To account for *both* indices *and* values. The ``euclidean_dist`` esentially uses only the index values to compute the distance. It is implemented as follows:
+
+.. code-block:: python
+
+   def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
+                 value1: Any, value2: Any):
+       return sqrt((ind1[0] - ind2[0]) ** 2 + (ind1[1] - ind2[1]) ** 2)
+
+For dealing with elevation, we can essentially use the values as the ``z`` coordinate and make:
+
+.. code-block:: python
+
+   def ext_euclid(ind1: tuple[int, int], ind2: tuple[int, int],
+                  value1: Any, value2: Any):
+       return sqrt((ind1[0] - ind2[0]) ** 2 + \
+                   (ind1[1] - ind2[1]) ** 2 + \
+                   (value1 - value2) ** 2)
+
+Now we may simply supply ``ext_euclid`` as the ``dist`` keyword argument:
+
+.. code-block:: python
+
+   import numpy as np
+   import gtravyl as gt
+   world = np.array([[0, 0, 0, 2, 2, 2],
+                     [0, 0, 0, 2, 2, 2],
+                     [0, 0, 2, 2, 2, 2],
+                     [4, 4, 4, 3, 3, 3]
+                     [4, 4, 4, 1, 1, 1],
+                     [4, 4, 4, 1, 1, 1]])
+   path = gt.shortest_path(world, (0, 0), (5, 5),
+                           neighbors=gt.moore_neighbors,
+                           allowed=lambda x: x < 4,
+                           dist=ext_euclid)
+   for cell in path:
+       world[cell] = 2
+
+   print(world)
+
+This gives:
+
+.. code-block:: python
+
+   [[9 9 0 2 2 2]
+    [0 0 9 2 2 2]
+    [0 0 0 9 2 3]
+    [4 4 4 3 9 3]
+    [4 4 4 1 1 9]
+    [4 4 4 1 1 9]]
