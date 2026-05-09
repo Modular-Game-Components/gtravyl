@@ -102,6 +102,15 @@ def not_one(value: Any):
     return value != 1
 
 
+def no_heuristic(cur: tuple[int, int], t: tuple[int, int], 
+                 grid: npt.NDArray):
+    return 0
+
+def euclid_heuristic(cur: tuple[int, int], t: tuple[int, int],
+                     grid: npt.NDArray):
+    return sqrt((cur[0] - t[0]) ** 2 + (cur[1] - t[1]) ** 2)
+
+
 def shortest_path(grid: npt.NDArray,
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
@@ -110,7 +119,8 @@ def shortest_path(grid: npt.NDArray,
                   neighbors=vn_neighbors,
                   allowed=not_one,
                   wrap=no_wrap,
-                  dist=unit_dist) -> list[tuple[int, int]]:
+                  dist=unit_dist,
+                  heuristic=no_heuristic) -> list[tuple[int, int]]:
     """Find shortest path from ``s`` to ``t`` in a given `grid`.
 
     :param grid: numpy array representation of the world to traverse.
@@ -161,7 +171,8 @@ def shortest_path(grid: npt.NDArray,
                 if score + d < scores[nb]:
                     scores[nb] = score + d
                     parents[nb] = candidate
-                    heappush(frontier, (score + d, nb)) 
+                    heappush(frontier, 
+                             (score + d + heuristic(nb, t, grid), nb)) 
     
     # Reconstruct:
     path: list[tuple[int, int]] = [t]
