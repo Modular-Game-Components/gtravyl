@@ -59,10 +59,11 @@ def vn_neighbors(ind: tuple[int, int],
     :param ind: Index to compute von Neumann neighborhood of.
     :param grid: The grid ``ind`` belongs to.
     """
-    left = wrap((ind[0] - 1, ind[1]), grid.shape)
-    right = wrap((ind[0] + 1, ind[1]), grid.shape)
-    up = wrap((ind[0], ind[1] - 1), grid.shape)
-    down = wrap((ind[0], ind[1] + 1), grid.shape)
+    shape = (len(grid), len(grid[0]))
+    left = wrap((ind[0] - 1, ind[1]), shape)
+    right = wrap((ind[0] + 1, ind[1]), shape)
+    up = wrap((ind[0], ind[1] - 1), shape)
+    down = wrap((ind[0], ind[1] + 1), shape)
     nbs = [left, right, up, down]
     nbs = filter(lambda x: in_bounds(x, grid.shape), nbs)
     return nbs
@@ -75,18 +76,19 @@ def moore_neighbors(ind: tuple[int, int],
     :param ind: Index to compute Moore neighborhood of.
     :param grid: The grid ``ind`` belongs to.
     """
-    left_tcorner = wrap((ind[0] - 1, ind[1] + 1), grid.shape)
-    left = wrap((ind[0] - 1, ind[1]), grid.shape)
-    left_bcorner = wrap((ind[0] - 1, ind[1] - 1), grid.shape)
-    right_tcorner = wrap((ind[0] + 1, ind[1] + 1), grid.shape)
+    shape = (len(grid), len(grid[0]))
+    left_tcorner = wrap((ind[0] - 1, ind[1] + 1), shape)
+    left = wrap((ind[0] - 1, ind[1]), shape)
+    left_bcorner = wrap((ind[0] - 1, ind[1] - 1), shape)
+    right_tcorner = wrap((ind[0] + 1, ind[1] + 1), shape)
     right = wrap((ind[0] + 1, ind[1]), grid.shape)
-    right_bcorner = wrap((ind[0] + 1, ind[1] - 1), grid.shape)
-    up = wrap((ind[0], ind[1] - 1), grid.shape)
-    down = wrap((ind[0], ind[1] + 1), grid.shape)
+    right_bcorner = wrap((ind[0] + 1, ind[1] - 1), shape)
+    up = wrap((ind[0], ind[1] - 1), shape)
+    down = wrap((ind[0], ind[1] + 1), shape)
     nbs = [left_tcorner, left, left_bcorner,
            right_tcorner, right, right_bcorner,
            up, down]
-    nbs = filter(lambda x: in_bounds(x, grid.shape), nbs)
+    nbs = filter(lambda x: in_bounds(x, shape), nbs)
     return nbs
 
 
