@@ -124,7 +124,7 @@ def shortest_path(grid: Sequence[Sequence[Any]],
                   heuristic=no_heuristic) -> list[tuple[int, int]]:
     """Find shortest path from ``s`` to ``t`` in a given `grid`.
 
-    :param grid: numpy array representation of the world to traverse.
+    :param grid: grid (2d array) representation of the world to traverse.
     :param si: The "source" index, i.e. where the path search starts.
     :param ti: The "destination" index, i.e. where the path should end.
     :param sv: The "source" value, i.e. the value of the start index.
