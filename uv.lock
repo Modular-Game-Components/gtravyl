@@ -145,13 +145,13 @@ name = "gtravyl"
 version = "0.1.5"
 source = { editable = "." }
 dependencies = [
-    { name = "numpy" },
     { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "numpy" },
     { name = "pytest" },
 ]
 docs = [
@@ -161,13 +161,13 @@ docs = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "numpy", specifier = ">=2.4.4" },
-    { name = "sphinx", specifier = ">=9.0.4" },
-]
+requires-dist = [{ name = "sphinx", specifier = ">=9.0.4" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=9.0.3" }]
+dev = [
+    { name = "numpy", specifier = ">=2.4.4" },
+    { name = "pytest", specifier = ">=9.0.3" },
+]
 docs = [
     { name = "sphinx", specifier = ">=9.0.4" },
     { name = "sphinx-automodapi", specifier = ">=0.22.0" },

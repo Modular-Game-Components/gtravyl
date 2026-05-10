@@ -1,10 +1,9 @@
 from collections import defaultdict
 from math import sqrt
 from heapq import heappush, heappop
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
-import numpy.typing as npt
 
 
 def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
@@ -53,7 +52,7 @@ def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 
 
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: npt.NDArray,
+                 grid: Sequence[Sequence[Any]],
                  wrap=no_wrap):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
@@ -69,7 +68,7 @@ def vn_neighbors(ind: tuple[int, int],
     return nbs
 
 def moore_neighbors(ind: tuple[int, int],
-                    grid: npt.NDArray, 
+                    grid: Sequence[Sequence[Any]], 
                     wrap=no_wrap):
     """Return the Moore neighborhood of a particular cell in the grid.
 
@@ -103,15 +102,15 @@ def not_one(value: Any):
 
 
 def no_heuristic(cur: tuple[int, int], t: tuple[int, int], 
-                 grid: npt.NDArray):
+                 grid: Sequence[Sequence[Any]]):
     return 0
 
 def euclid_heuristic(cur: tuple[int, int], t: tuple[int, int],
-                     grid: npt.NDArray):
+                     grid: Sequence[Sequence[Any]]):
     return sqrt((cur[0] - t[0]) ** 2 + (cur[1] - t[1]) ** 2)
 
 
-def shortest_path(grid: npt.NDArray,
+def shortest_path(grid: Sequence[Sequence[Any]],
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
                   sv: Any | None = None,
@@ -166,8 +165,9 @@ def shortest_path(grid: npt.NDArray,
         if score > scores[t]:
             continue
         for nb in neighbors(candidate, grid, wrap=wrap):
-            if nb not in seen and allowed(grid[nb]):
-                d = dist(candidate, nb, grid[candidate], grid[nb])
+            if nb not in seen and allowed(grid[nb[0]][nb[1]]):
+                d = dist(candidate, nb, 
+                         grid[candidate[0]][candidate[1]], grid[nb[0]][nb[1]])
                 if score + d < scores[nb]:
                     scores[nb] = score + d
                     parents[nb] = candidate
