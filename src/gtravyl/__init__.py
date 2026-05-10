@@ -1,7 +1,7 @@
 from collections import defaultdict
 from math import sqrt
 from heapq import heappush, heappop
-from typing import Any, Mapping
+from typing import Any
 
 import numpy as np
 
@@ -52,7 +52,7 @@ def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 
 
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: Mapping[int, Mapping[int, Any]],
+                 grid: list[list[Any]],
                  wrap=no_wrap):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
@@ -69,7 +69,7 @@ def vn_neighbors(ind: tuple[int, int],
     return nbs
 
 def moore_neighbors(ind: tuple[int, int],
-                    grid: Mapping[int, Mapping[int, Any]],
+                    grid: list[list[Any]],
                     wrap=no_wrap):
     """Return the Moore neighborhood of a particular cell in the grid.
 
@@ -104,15 +104,15 @@ def not_one(value: Any):
 
 
 def no_heuristic(cur: tuple[int, int], t: tuple[int, int], 
-                 grid: Mapping[int, Mapping[int, Any]]):
+                 grid: list[list[Any]]):
     return 0
 
 def euclid_heuristic(cur: tuple[int, int], t: tuple[int, int],
-                     grid: Mapping[int, Mapping[int, Any]]):
+                     grid: list[list[Any]]):
     return sqrt((cur[0] - t[0]) ** 2 + (cur[1] - t[1]) ** 2)
 
 
-def shortest_path(grid: Mapping[int, Mapping[int, Any]],
+def shortest_path(grid: list[list[Any]],
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
                   sv: Any | None = None,
