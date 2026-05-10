@@ -125,9 +125,9 @@ def shortest_path(grid: npt.NDArray,
 
     :param grid: numpy array representation of the world to traverse.
     :param si: The "source" index, i.e. where the path search starts.
-    :param ti: The "desitination" index, i.e. where the path should end.
+    :param ti: The "destination" index, i.e. where the path should end.
     :param sv: The "source" value, i.e. the value of the start index.
-    :param tv: The "desitination" value, i.e. the value of the end index.
+    :param tv: The "destination" value, i.e. the value of the end index.
     :param neighbors: Computes the neighborhood of any choice of index in the
        grid.
     :param wrap: Does the grid wrap around. Defaults to no wrap.

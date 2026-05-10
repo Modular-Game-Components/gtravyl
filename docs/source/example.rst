@@ -78,7 +78,7 @@ This gives a path (represented by the cells with ``2``) that looks like one shou
                         [1, 1, 0, 1, 1, 1, 4]])
       path = gt.shortest_path(world, sv=3, tv=4)
 
-   ``sv`` and ``tv`` are short for "start value" and "end value, respectively.
+   ``sv`` and ``tv`` are short for "start value" and "destination value", respectively.
 
 --------------------
 A Variant: Diagonals
