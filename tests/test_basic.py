@@ -1,3 +1,5 @@
+import typing
+
 import gtravyl as gt
 import numpy as np
 
@@ -7,6 +9,7 @@ def test_basic():
                       [0, 0, 0, 0, 0, 0, 0],
                       [1, 1, 0, 1, 1, 1, 0],
                       [1, 1, 0, 1, 1, 1, 0]])
+    typing.cast(world, list[list[int]])
     path = gt.shortest_path(world, (0, 0), (4, 6))
     for cell in path:
         world[cell] = 2
