@@ -18,9 +18,6 @@ jobs:
       - name: Setup uv project.
         run: uv sync --locked --all-extras --dev
 
-      - name: Install pyrefly
-        run: |
-          uvx pyrefly init
       - name: Run pyrefly
         run: |
           uvx pyrefly check --output-format=github
