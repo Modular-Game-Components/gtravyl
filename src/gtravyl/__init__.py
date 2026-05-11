@@ -160,7 +160,7 @@ def shortest_path(grid: npt.NDArray,
     seen = set() # Keeps track of already seen indices.
     # Push the node (and it's parent)
     # NOTE s has no parent thus it is set to None.
-    heappush(frontier, (0, s))
+    heappush(frontier, (0 + heuristic(s, t, grid), s))
     parents[s] = None
     while frontier:
         (score, candidate) = heappop(frontier)
