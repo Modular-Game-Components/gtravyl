@@ -1,6 +1,6 @@
 [project]
 name = "gtravyl"
-version = "0.1.5"
+version = "0.1.6"
 description = "A simple to use library for finding the shortest path in a grid."
 readme = "README.md"
 authors = [
