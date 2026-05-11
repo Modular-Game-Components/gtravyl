@@ -4,6 +4,7 @@ from heapq import heappush, heappop
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 
 def in_bounds(pt: tuple[int, int], dim: tuple[int, int]) -> bool:
@@ -52,7 +53,7 @@ def euclidean_dist(ind1: tuple[int, int], ind2: tuple[int, int],
 
 
 def vn_neighbors(ind: tuple[int, int], 
-                 grid: list[list[Any]],
+                 grid: npt.NDArray,
                  wrap=no_wrap):
     """Return the von Neumann neighborhood of a particular cell in the grid.
 
@@ -69,7 +70,7 @@ def vn_neighbors(ind: tuple[int, int],
     return nbs
 
 def moore_neighbors(ind: tuple[int, int],
-                    grid: list[list[Any]],
+                    grid: npt.NDArray,
                     wrap=no_wrap):
     """Return the Moore neighborhood of a particular cell in the grid.
 
@@ -104,15 +105,15 @@ def not_one(value: Any):
 
 
 def no_heuristic(cur: tuple[int, int], t: tuple[int, int], 
-                 grid: list[list[Any]]):
+                 grid: npt.NDArray):
     return 0
 
 def euclid_heuristic(cur: tuple[int, int], t: tuple[int, int],
-                     grid: list[list[Any]]):
+                     grid: npt.NDArray):
     return sqrt((cur[0] - t[0]) ** 2 + (cur[1] - t[1]) ** 2)
 
 
-def shortest_path(grid: list[list[Any]],
+def shortest_path(grid: npt.NDArray,
                   si: tuple[int, int] | None = None, 
                   ti: tuple[int, int] | None = None,
                   sv: Any | None = None,
