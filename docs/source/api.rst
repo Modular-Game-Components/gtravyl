@@ -1,5 +1,5 @@
 API
 ===
 
-.. automodapi:: gtravyl
-   :no-inheritance-diagram:
+.. automodule:: gtravyl
+   :members:
