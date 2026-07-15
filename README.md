@@ -1,6 +1,8 @@
 gtravyl
 =======
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Modular-Game-Components/gtravyl/pytest.yml)
+
 `gtravyl` provides an easy way to take a grid-like layout and compute the shortest distance from any two desired cells in the grid.
 
 # Quick Install
