@@ -3,6 +3,20 @@ gtravyl
 
 `gtravyl` provides an easy way to take a grid-like layout and compute the shortest distance from any two desired cells in the grid.
 
+# Quick Install
+
+If you use [pip](https://pypi.org/project/pip/):
+
+```
+pip install gtravyl
+```
+
+If you use [uv](https://github.com/astral-sh/uv):
+
+```
+uv add gtravyl
+```
+
 # How does it work?
 
 Suppose you are trying to create a real time strategy game. You may have a grid-like map internally represented as a `numpy` array. It might look something like:
