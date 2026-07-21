@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <!-- gtravyl logo: shortest path traced through a grid, Python yellow-to-blue gradient -->
+
+  <defs>
+    <linearGradient id="pyGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD43B"/>
+      <stop offset="100%" stop-color="#306998"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="152" height="152" rx="28" fill="#2B2118"/>
+
+  <!-- grid -->
+  <g stroke="#6B5B4E" stroke-width="2" stroke-linecap="round">
+    <line x1="36" y1="34" x2="36" y2="126"/>
+    <line x1="59" y1="34" x2="59" y2="126"/>
+    <line x1="82" y1="34" x2="82" y2="126"/>
+    <line x1="105" y1="34" x2="105" y2="126"/>
+    <line x1="128" y1="34" x2="128" y2="126"/>
+
+    <line x1="36" y1="34" x2="128" y2="34"/>
+    <line x1="36" y1="57" x2="128" y2="57"/>
+    <line x1="36" y1="80" x2="128" y2="80"/>
+    <line x1="36" y1="103" x2="128" y2="103"/>
+    <line x1="36" y1="126" x2="128" y2="126"/>
+  </g>
+
+  <!-- highlighted path cells -->
+  <g fill="url(#pyGradient)" opacity="0.25">
+    <rect x="36" y="103" width="23" height="23"/>
+    <rect x="59" y="103" width="23" height="23"/>
+    <rect x="59" y="80" width="23" height="23"/>
+    <rect x="82" y="80" width="23" height="23"/>
+    <rect x="82" y="57" width="23" height="23"/>
+    <rect x="105" y="57" width="23" height="23"/>
+    <rect x="105" y="34" width="23" height="23"/>
+  </g>
+
+  <!-- the traced shortest path -->
+  <polyline points="47.5,114.5 70.5,114.5 70.5,91.5 93.5,91.5 93.5,68.5 116.5,68.5 116.5,45.5"
+            fill="none" stroke="url(#pyGradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- start / end nodes -->
+  <circle cx="47.5" cy="114.5" r="6" fill="#FFD43B" stroke="#2B2118" stroke-width="1.5"/>
+  <circle cx="116.5" cy="45.5" r="6" fill="#306998" stroke="#2B2118" stroke-width="1.5"/>
+</svg>
